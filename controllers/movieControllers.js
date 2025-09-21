@@ -2,7 +2,7 @@
 const db_connection = require("../data/db.js"); 
 
 const index = (req, res) => {
-  // query => selezioniamo tutti i film dalla tabella "movies"
+  // query => selezione di tutti i film dalla tabella "movies"
   const query = `SELECT * FROM movies`;
 
   // esecuzione della query con callback
@@ -21,43 +21,47 @@ const index = (req, res) => {
   });
 };
 
-const show = (req, res) => {
-  // estrazione dell'id dalla rotta
+// SHOW 
+  const show = (req, res) => {
   const { id } = req.params;
+  const sqlMovie   = "SELECT * FROM movies WHERE id = ?";
+  const sqlReviews = "SELECT * FROM reviews WHERE movie_id = ?";
 
-  // query parametrizzata per un singolo film
-  const query = `SELECT * FROM movies WHERE id = ?`;
+  db_connection.query(sqlMovie, [id], (err, resultMovie) => {
+    if (err) return res.status(500).json({ error: "query failed", detail: err });
+    if (resultMovie.length === 0) return res.status(404).json({ error: "Film non trovato" });
 
-  // esecuzione della query passando l'id come parametro
-  db_connection.query(query, [id], (err, results) => {
-    // errore in query → 500
-    if (err) return res.status(500).json({ error: "query failed", id, err });
+    const movie = resultMovie[0];
 
-    // nessun film trovato → 404
-    if (results.length === 0)
-      return res.status(404).json({ error: "Film non trovato" });
+    db_connection.query(sqlReviews, [id], (err2, resultReviews) => {
+      if (err2) return res.status(500).json({ error: "query failed", detail: err2 });
 
-    // ritorniamo il risultato
-    return res.json(results);
+      // film + recensioni
+      res.json({
+        ...movie,
+        image: movie.image ? req.imagePath + movie.image : null,
+        reviews: resultReviews,
+      });
+    });
   });
 };
 
- //  POST 
+// POST 
 const create = (req, res) => {
   res.send("create");
 };
 
- //  GET 
+// GET 
 const modify = (req, res) => {
   res.send("modify");
 };
 
- // PUT/PATCH 
+// PUT/PATCH 
 const update = (req, res) => {
   res.send("update");
 };
 
- //  DELETE
+// DELETE
 const destroy = (req, res) => {
   // recupero dell'id dalla rotta
   const { id } = req.params;
