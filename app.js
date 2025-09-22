@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 // importazione express
 const express = require("express");
 
@@ -12,6 +13,11 @@ const moviesRoute = require("./routes/movieRoute");
 
 // creazione istanza dell'applicazione
 const app = express();
+
+// abilitazione cors
+const cors = require('cors');
+app.use(cors());
+
 
 // static + JSON
 app.use(express.static('public'));
