@@ -1,3 +1,4 @@
+require('dotenv').config();
 // importazione express
 const express = require("express");
 
@@ -7,7 +8,7 @@ const notFound = require("./middlewares/notFound");
 const errorsHandler = require("./middlewares/errorsHandler");
 
 // importazione router /movies
-const moviesRoute = require("./routes/moviesRoute");
+const moviesRoute = require("./routes/movieRoute");
 
 // creazione istanza dell'applicazione
 const app = express();
