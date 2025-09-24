@@ -1,10 +1,6 @@
 // controllers/reviewControllers.js
 const db = require("../data/db");
 
-/**
- * GET /api/movies/:id/reviews
- * Lista recensioni del film
- */
 function listByMovie(req, res, next) {
   const movieId = Number(req.params.id);
   if (!movieId) return res.status(400).json({ error: "movieId non valido" });
@@ -21,10 +17,6 @@ function listByMovie(req, res, next) {
   });
 }
 
-/**
- * POST /api/movies/:id/reviews
- * Body: { name, vote(0-5), text }
- */
 function addReview(req, res, next) {
   const movieId = Number(req.params.id);
   const { name, vote, text } = req.body;
