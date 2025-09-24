@@ -18,7 +18,6 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 
-
 // static + JSON
 app.use(express.static('public'));
 app.use(express.json());
@@ -27,7 +26,8 @@ app.use(express.json());
 app.use(imagePathMiddleware);
 
 // rotte
-app.use("/movies", moviesRoute);
+app.use("/api/movies", moviesRoute);
+app.use("/movies", moviesRoute); 
 app.get('/', (_req, res) => {
   res.send('API server main page');
 });
